@@ -7,7 +7,10 @@ import {AppConst} from '../../constants/';
 describe("<Board /> component", () => {
   let wrapper, instance;
   beforeEach(() => {
-    wrapper = mount(<Board />);
+    const props = {
+        activePlayer: AppConst.PLAYER_X_NAME
+    };
+    wrapper = mount(<Board {...props} />);
     instance = wrapper.instance();
   });
 
@@ -40,6 +43,18 @@ describe("<Board /> component", () => {
     btn.simulate("click");
     
     expect(btn.text()).toEqual(AppConst.PLAYER_X_NAME);
+  });
+
+  it("Should have the activePlayer prop of type string", () => {
+    expect(typeof wrapper.props().activePlayer).toEqual("string");
+  });
+
+  it("Should update the filled box with active player", () => {
+    const btn = wrapper.find("ul li button").at(4);
+    
+    btn.simulate("click");
+
+    expect(wrapper.state().filledBoxes[4]).toEqual(wrapper.props().activePlayer);
   });
 
 });

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Box from '../Box/';
 import {AppConst} from '../../constants/';
 import './Board.css';
@@ -7,7 +8,8 @@ class Board extends Component {
     constructor(props){
         super(props);
         this.state = {
-            filledBoxes: []
+            filledBoxes: [],
+            activePlayer: props.activePlayer
         };
     }
 
@@ -26,7 +28,7 @@ class Board extends Component {
 
     fillTheBox = (boxIndex) => {
         let filledBoxes = this.state.filledBoxes;
-        filledBoxes[boxIndex] = AppConst.PLAYER_X_NAME;
+        filledBoxes[boxIndex] = this.props.activePlayer;
         this.setState(() => ({
             filledBoxes: filledBoxes
         }));
@@ -38,5 +40,9 @@ class Board extends Component {
         </ul>);
     }
 }
+
+Board.propTypes = {
+    activePlayer: PropTypes.string.isRequired
+};
 
 export default Board;
