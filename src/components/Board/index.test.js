@@ -175,4 +175,21 @@ describe("<Board /> component", () => {
     expect(instance._isGameFinished()).toBeTruthy();
   });
 
+  it("Player wins if fills all the boxes diagonally", () => {
+    const btnList = wrapper.find("ul li button");
+    const box0 = btnList.at(0);
+    const box1 = btnList.at(1);
+    const box4 = btnList.at(4);
+    const box5 = btnList.at(5);
+    const box8 = btnList.at(8);
+
+    box0.simulate("click");
+    box1.simulate("click");
+    box4.simulate("click");
+    box5.simulate("click");
+    box8.simulate("click");
+
+    expect(instance._isGameFinished()).toBeTruthy();
+  });
+
 });

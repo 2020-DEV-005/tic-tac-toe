@@ -40,7 +40,8 @@ class Board extends Component {
 
     _isGameFinished = () => {
         if( this._isAnyRowCompletedByTheActivePlayer() || 
-            this._isAnyColumnCompletedByTheActivePlayer()
+            this._isAnyColumnCompletedByTheActivePlayer() ||
+            this._isAnyDiagonalCompletedByTheActivePlayer()
         ) {
             this.props.setTheWinner();
             return true;
@@ -88,6 +89,29 @@ class Board extends Component {
         return (filledBoxes[colStartIndex] === activePlayer && 
             filledBoxes[colStartIndex + numOfCols] === activePlayer && 
             filledBoxes[colStartIndex + (2 * numOfCols)] === activePlayer);
+    }
+
+    _isAnyDiagonalCompletedByTheActivePlayer = () => {
+        let diagonalList = AppConst.DIAGONAL_INDICES;
+        let numOfDiagonals = AppConst.TOTAL_DIAGONALS;
+        let filledBoxes = this.state.filledBoxes;
+        let activePlayer = this.props.activePlayer;
+        let isPlayerWin = false;
+        for(let i = 0; i < numOfDiagonals; i++) {
+            if(this._isDiagonalCompleted(diagonalList, i)){
+                isPlayerWin = true;
+                break;
+            }
+        }
+        return isPlayerWin;
+    }
+
+    _isDiagonalCompleted = (diagonalList, i) => {
+        let filledBoxes = this.state.filledBoxes;
+        let activePlayer = this.props.activePlayer;
+        return (filledBoxes[diagonalList[i][0]] === activePlayer && 
+            filledBoxes[diagonalList[i][1]] === activePlayer && 
+            filledBoxes[diagonalList[i][2]] === activePlayer);
     }
 
     render = () => {

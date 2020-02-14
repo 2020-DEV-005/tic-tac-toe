@@ -9,4 +9,6 @@ export const AppConst = {
     WIN_THE_GAME: "win the game",
     TOTAL_COLUMNS: 3,
     COLUMN_START_INDEXES: [0, 1, 2],
+    TOTAL_DIAGONALS: 2,
+    DIAGONAL_INDICES: [[0, 4, 8], [2, 4, 6]]
 }
