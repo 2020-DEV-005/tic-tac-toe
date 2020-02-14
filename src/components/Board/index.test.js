@@ -9,13 +9,15 @@ describe("<Board /> component", () => {
   const changeActivePlayerMock = () => {
     const activePlayer = (wrapper.props().activePlayer === AppConst.PLAYER_X_NAME) ? AppConst.PLAYER_O_NAME : AppConst.PLAYER_X_NAME;
     wrapper.setProps({
+        ...wrapper.props(),
         activePlayer: activePlayer
     });
   };
+ 
   beforeEach(() => {
     const props = {
       activePlayer: AppConst.PLAYER_X_NAME,
-      changeActivePlayer: jest.fn().mockImplementationOnce(changeActivePlayerMock)
+      changeActivePlayer: jest.fn(changeActivePlayerMock)
     };
     wrapper = mount(<Board {...props} />);
     instance = wrapper.instance();
@@ -67,6 +69,8 @@ describe("<Board /> component", () => {
   it("changeActivePlayer to be called when the box filled", () => {
     const btn = wrapper.find("ul li button").at(3);
 
+    instance.forceUpdate();
+
     btn.simulate("click");
 
     expect(instance.props.changeActivePlayer).toHaveBeenCalled();
@@ -86,7 +90,7 @@ describe("<Board /> component", () => {
     expect(wrapper.state().filledBoxes[2]).toEqual(AppConst.PLAYER_O_NAME);
   });
 
-  it("Making sure of box to be filled only once", () => {
+  it("Can be filled only once in the box", () => {
     const btn = wrapper.find("ul li button").at(0);
 
     btn.simulate("click");
@@ -96,6 +100,33 @@ describe("<Board /> component", () => {
     btn.simulate("click");
 
     expect(instance.state.filledBoxes[0]).toEqual(AppConst.PLAYER_X_NAME);
+
+  });
+
+  it("Player wins when a row completed by the player", () => {
+    const btnList = wrapper.find("ul li button");
+    const box1 = btnList.at(1);
+    const box2 = btnList.at(2);
+    const box3 = btnList.at(3);
+    const box4 = btnList.at(4);
+    const box5 = btnList.at(5);
+
+    box3.simulate("click");
+    expect(instance.state.filledBoxes[3]).toEqual(AppConst.PLAYER_X_NAME);
+    
+    box1.simulate("click");    
+    expect(instance.state.filledBoxes[1]).toEqual(AppConst.PLAYER_O_NAME);
+    
+    box4.simulate("click");
+    expect(instance.state.filledBoxes[4]).toEqual(AppConst.PLAYER_X_NAME);
+    
+    box2.simulate("click");
+    expect(instance.state.filledBoxes[2]).toEqual(AppConst.PLAYER_O_NAME);
+    
+    box5.simulate("click");
+    expect(instance.state.filledBoxes[5]).toEqual(AppConst.PLAYER_X_NAME);
+    
+    expect(instance.state.winner).toEqual(AppConst.PLAYER_X_NAME);
 
   });
 

@@ -9,7 +9,7 @@ class Board extends Component {
         super(props);
         this.state = {
             filledBoxes: [],
-            activePlayer: props.activePlayer
+            winner: null
         };
     }
 
@@ -33,8 +33,39 @@ class Board extends Component {
             this.setState(() => ({
                 filledBoxes: filledBoxes
             }));
-            this.props.changeActivePlayer();
+            const isWinner = this._checkForTheWinner();
+            !isWinner && this.props.changeActivePlayer();
         }
+    }
+
+    _checkForTheWinner = () => {
+        if(this._isAnyRowCompletedByTheActivePlayer()){
+            this.setState((state, props) => ({
+                winner: props.activePlayer
+            }));
+            return true
+        }
+        return false;
+    }
+
+    _isAnyRowCompletedByTheActivePlayer = () => {
+        let rowsList = AppConst.ROW_START_INDEXES;
+        let numOfRows = AppConst.TOTAL_ROWS;
+        let isPlayerWin = false;
+        for(var i = 0; i < numOfRows; i++) {
+            let rowStartIndex = rowsList[i];
+            if(this._isRowCompletedByTheActivePlayer(rowStartIndex, )){
+                isPlayerWin = true;
+                break;
+            } 
+        }
+        return isPlayerWin;
+    }
+
+    _isRowCompletedByTheActivePlayer = (rowStartIndex) => {
+        const activePlayer = this.props.activePlayer;
+        const filledBoxes = this.state.filledBoxes;
+        return filledBoxes[rowStartIndex] === activePlayer && filledBoxes[rowStartIndex+1] === activePlayer && filledBoxes[rowStartIndex+2] === activePlayer;
     }
 
     render = () => {
