@@ -6,5 +6,7 @@ export const AppConst = {
     TOTAL_BOXES: 9,
     TOTAL_ROWS: 3,
     ROW_START_INDEXES: [0,3,6],
-    WIN_THE_GAME: "win the game"
+    WIN_THE_GAME: "win the game",
+    TOTAL_COLUMNS: 3,
+    COLUMN_START_INDEXES: [0, 1, 2],
 }

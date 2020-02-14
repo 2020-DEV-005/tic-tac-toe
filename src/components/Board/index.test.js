@@ -158,4 +158,21 @@ describe("<Board /> component", () => {
 
   });
 
+  it("Player wins when a column completed by the player", () => {
+    const btnList = wrapper.find("ul li button");
+    const box0 = btnList.at(0);
+    const box1 = btnList.at(1);
+    const box3 = btnList.at(3);
+    const box4 = btnList.at(4);
+    const box6 = btnList.at(6);
+
+    box0.simulate("click");
+    box1.simulate("click");
+    box3.simulate("click");
+    box4.simulate("click");
+    box6.simulate("click");
+ 
+    expect(instance._isGameFinished()).toBeTruthy();
+  });
+
 });
