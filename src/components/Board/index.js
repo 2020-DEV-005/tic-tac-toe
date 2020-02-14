@@ -8,16 +8,16 @@ class Board extends Component {
     constructor(props){
         super(props);
         this.state = {
-            filledBoxes: [],
-            winner: null
+            filledBoxes: []
         };
+        this._isGameOver = false;
     }
 
     _getBoxes = () => {
         const totalBoxes = AppConst.TOTAL_BOXES;
         let boxList = []
         for(let i=0; i<totalBoxes; i++) {
-            boxList.push(<li key={i}><Box onClick={this.fillTheBox.bind(this, i)} value={this.getFilledValue(i)} /></li>);
+            boxList.push(<li key={i}><Box onClick={this.fillTheBox.bind(this, i)} value={this.getFilledValue(i)} gameOver={this._isGameOver}/></li>);
         }
         return boxList;
     }
@@ -28,22 +28,20 @@ class Board extends Component {
 
     fillTheBox = (boxIndex) => {
         let filledBoxes = this.state.filledBoxes;
-        if(!filledBoxes[boxIndex]){
+        if(!filledBoxes[boxIndex]  && !this._isGameOver){
             filledBoxes[boxIndex] = this.props.activePlayer;
             this.setState(() => ({
                 filledBoxes: filledBoxes
             }));
-            const isWinner = this._checkForTheWinner();
-            !isWinner && this.props.changeActivePlayer();
+            this._isGameOver = this._isGameFinished();
+            !this._isGameOver && this.props.changeActivePlayer();
         }
     }
 
-    _checkForTheWinner = () => {
+    _isGameFinished = () => {
         if(this._isAnyRowCompletedByTheActivePlayer()){
-            this.setState((state, props) => ({
-                winner: props.activePlayer
-            }));
-            return true
+            this.props.setTheWinner();
+            return true;
         }
         return false;
     }
@@ -77,7 +75,8 @@ class Board extends Component {
 
 Board.propTypes = {
     activePlayer: PropTypes.string.isRequired,
-    changeActivePlayer: PropTypes.func.isRequired
+    changeActivePlayer: PropTypes.func.isRequired,
+    setTheWinner: PropTypes.func.isRequired
 };
 
 export default Board;

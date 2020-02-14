@@ -17,7 +17,8 @@ describe("<Board /> component", () => {
   beforeEach(() => {
     const props = {
       activePlayer: AppConst.PLAYER_X_NAME,
-      changeActivePlayer: jest.fn(changeActivePlayerMock)
+      changeActivePlayer: jest.fn(changeActivePlayerMock),
+      setTheWinner: jest.fn()
     };
     wrapper = mount(<Board {...props} />);
     instance = wrapper.instance();
@@ -103,7 +104,7 @@ describe("<Board /> component", () => {
 
   });
 
-  it("Player wins when a row completed by the player", () => {
+  it("Should finish the game if player completes the row", () => {
     const btnList = wrapper.find("ul li button");
     const box1 = btnList.at(1);
     const box2 = btnList.at(2);
@@ -126,7 +127,34 @@ describe("<Board /> component", () => {
     box5.simulate("click");
     expect(instance.state.filledBoxes[5]).toEqual(AppConst.PLAYER_X_NAME);
     
-    expect(instance.state.winner).toEqual(AppConst.PLAYER_X_NAME);
+    expect(instance._isGameFinished()).toBeTruthy();
+
+  });
+
+  it("Set the winner to be called, if player wins", () => {
+    const btnList = wrapper.find("ul li button");
+    const box1 = btnList.at(1);
+    const box2 = btnList.at(2);
+    const box3 = btnList.at(3);
+    const box4 = btnList.at(4);
+    const box5 = btnList.at(5);
+
+    box3.simulate("click");
+    expect(instance.state.filledBoxes[3]).toEqual(AppConst.PLAYER_X_NAME);
+    
+    box1.simulate("click");    
+    expect(instance.state.filledBoxes[1]).toEqual(AppConst.PLAYER_O_NAME);
+    
+    box4.simulate("click");
+    expect(instance.state.filledBoxes[4]).toEqual(AppConst.PLAYER_X_NAME);
+    
+    box2.simulate("click");
+    expect(instance.state.filledBoxes[2]).toEqual(AppConst.PLAYER_O_NAME);
+    
+    box5.simulate("click");
+    expect(instance.state.filledBoxes[5]).toEqual(AppConst.PLAYER_X_NAME);
+
+    expect(instance.props.setTheWinner).toHaveBeenCalled();
 
   });
 

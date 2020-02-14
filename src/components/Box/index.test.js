@@ -5,7 +5,7 @@ import Box from '../Box/';
 describe("<Box /> component", () => {
   let wrapper;
   beforeEach( () => {
-    wrapper = shallow(<Box onClick={jest.fn()} />);
+    wrapper = shallow(<Box onClick={jest.fn()} gameOver={false}/>);
   });
 
   it("Should have button element", () => {
