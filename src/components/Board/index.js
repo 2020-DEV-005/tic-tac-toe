@@ -28,11 +28,13 @@ class Board extends Component {
 
     fillTheBox = (boxIndex) => {
         let filledBoxes = this.state.filledBoxes;
-        filledBoxes[boxIndex] = this.props.activePlayer;
-        this.setState(() => ({
-            filledBoxes: filledBoxes
-        }));
-        this.props.changeActivePlayer();
+        if(!filledBoxes[boxIndex]){
+            filledBoxes[boxIndex] = this.props.activePlayer;
+            this.setState(() => ({
+                filledBoxes: filledBoxes
+            }));
+            this.props.changeActivePlayer();
+        }
     }
 
     render = () => {

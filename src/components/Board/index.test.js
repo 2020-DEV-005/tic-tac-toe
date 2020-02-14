@@ -86,4 +86,17 @@ describe("<Board /> component", () => {
     expect(wrapper.state().filledBoxes[2]).toEqual(AppConst.PLAYER_O_NAME);
   });
 
+  it("Making sure of box to be filled only once", () => {
+    const btn = wrapper.find("ul li button").at(0);
+
+    btn.simulate("click");
+
+    expect(instance.state.filledBoxes[0]).toEqual(AppConst.PLAYER_X_NAME);
+
+    btn.simulate("click");
+
+    expect(instance.state.filledBoxes[0]).toEqual(AppConst.PLAYER_X_NAME);
+
+  });
+
 });
